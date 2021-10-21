@@ -24,6 +24,7 @@ namespace Minesweaper
             this.colCount = colCount;
             this.MaxMine = mineCount;
             Generaloize();
+
         }
 
         private void Generaloize()
@@ -37,8 +38,10 @@ namespace Minesweaper
                 if (board[random1, random2].Type != CellType.Mine)
                 {
                     board[random1, random2].Type = CellType.Mine;
+                    Szamok(random1, random2);
                 }
-                else {
+                else
+                {
                     i--;
                 }
 
@@ -46,6 +49,38 @@ namespace Minesweaper
 
 
         }
+        private void Szamok(byte row, byte col)
+        {
+            for (int i = row - 1; i <= row + 1; i++)
+            {
+                if (i < 0 || i >= rowCount)
+                {
+                    continue;
+                }
+                for (int j = col - 1; j <= col + 1; j++)
+                {
+                    if (j < 0 || j >= colCount)
+                    {
+                        continue;
+                    }
+                    if (board[i, j].Type != CellType.Mine)
+                    {
+                        board[i, j].Type++;
+                    }
+                }
+
+            }
+
+
+
+        }
+        public CellType GetCellType(byte row, byte col)
+        {
+
+            return board[row, col].Type;
+
+        }
+
 
     }
 }

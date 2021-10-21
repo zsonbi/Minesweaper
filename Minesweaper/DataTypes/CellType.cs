@@ -11,6 +11,6 @@
         Six = 6,
         Seven = 7,
         Eight = 8,
-        Mine = 255,
+        Mine = 9,
     }
 }

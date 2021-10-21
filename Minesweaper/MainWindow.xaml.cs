@@ -23,6 +23,8 @@ namespace Minesweaper
         private byte colCount = 20; //The column count on the board
         private byte rowCount = 20; //The row count on the board
         private Button[,] buttonArray; //A 2d array of buttons
+        private aknakereso game;
+        private byte mineCount=140;
 
         /// <summary>
         /// Default constructor
@@ -80,6 +82,7 @@ namespace Minesweaper
         /// </summary>
         private void NewGame()
         {
+            game = new aknakereso(rowCount,colCount,mineCount);
             GenerateButtons();
         }
 
@@ -142,6 +145,10 @@ namespace Minesweaper
                         break;
                 }
             }
+            if (cellType==CellType.Mine)
+            {
+                selected.Content = "m";
+            }
         }
 
         //**************************************************************************
@@ -164,7 +171,7 @@ namespace Minesweaper
             string[] splittedName = (sender as Button).Name.Split('b');
             byte selectedRow = Convert.ToByte(splittedName[1]);
             byte selectedCol = Convert.ToByte(splittedName[2]);
-            FlipButton(selectedRow, selectedCol, CellType.Three);
+            FlipButton(selectedRow, selectedCol, game.GetCellType(selectedRow,selectedCol));
         }
 
         //-----------------------------------------------------------------------

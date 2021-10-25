@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace Minesweaper
 {
-    class aknakereso
+    internal class aknakereso
     {
-        struct Cell
+        private struct Cell
         {
             public CellType Type;
             public bool Visited;
-
         }
+
         private byte colCount;//The column count on the board
         private byte rowCount; //The row count on the board
         private byte MaxMine;
         private Cell[,] board;
+
         public aknakereso(byte rowCount, byte colCount, byte mineCount)
         {
             this.rowCount = rowCount;
             this.colCount = colCount;
             this.MaxMine = mineCount;
             Generaloize();
-
         }
 
         private void Generaloize()
@@ -44,11 +44,9 @@ namespace Minesweaper
                 {
                     i--;
                 }
-
             }
-
-
         }
+
         private void Szamok(byte row, byte col)
         {
             for (int i = row - 1; i <= row + 1; i++)
@@ -68,19 +66,12 @@ namespace Minesweaper
                         board[i, j].Type++;
                     }
                 }
-
             }
-
-
-
         }
+
         public CellType GetCellType(byte row, byte col)
         {
-
             return board[row, col].Type;
-
         }
-
-
     }
 }

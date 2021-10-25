@@ -20,5 +20,9 @@
 
         <Grid x:Name="GameBoard" Grid.Row="1" Margin="10">
         </Grid>
+        <!--Remains hidden during the game shows up when a mine is clicked on-->
+        <Viewbox Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Label Name="GameOverLabel" Content="Game Over"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
+        </Viewbox>
     </Grid>
 </Window>

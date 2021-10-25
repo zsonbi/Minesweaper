@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Minesweaper
 {
@@ -23,8 +15,8 @@ namespace Minesweaper
         private byte colCount = 20; //The column count on the board
         private byte rowCount = 20; //The row count on the board
         private Button[,] buttonArray; //A 2d array of buttons
-        private aknakereso game;
-        private byte mineCount=140;
+        private aknakereso game; //The game's class (This has most of the logic)
+        private byte mineCount = 140; //The number of mines the game will have
 
         /// <summary>
         /// Default constructor
@@ -77,12 +69,15 @@ namespace Minesweaper
             }
         }
 
+        //--------------------------------------------------------------------
         /// <summary>
         /// Creates a new game
         /// </summary>
         private void NewGame()
         {
-            game = new aknakereso(rowCount,colCount,mineCount);
+            GameOverLabel.Visibility = Visibility.Hidden;
+            GameBoard.IsHitTestVisible = true;
+            game = new aknakereso(rowCount, colCount, mineCount);
             GenerateButtons();
         }
 
@@ -145,10 +140,17 @@ namespace Minesweaper
                         break;
                 }
             }
-            if (cellType==CellType.Mine)
+
+            //When the user clicked on a mine
+            if (cellType == CellType.Mine)
             {
-                selected.Content = "m";
+                selected.Background = Brushes.Red;
+                RevealMines(); //Reveals all of the other mines
+                GameBoard.IsHitTestVisible = false;
+                GameOverLabel.Visibility = Visibility.Visible;
             }
+            else
+                selected.IsEnabled = false;
         }
 
         //**************************************************************************
@@ -171,7 +173,31 @@ namespace Minesweaper
             string[] splittedName = (sender as Button).Name.Split('b');
             byte selectedRow = Convert.ToByte(splittedName[1]);
             byte selectedCol = Convert.ToByte(splittedName[2]);
-            FlipButton(selectedRow, selectedCol, game.GetCellType(selectedRow,selectedCol));
+            FlipButton(selectedRow, selectedCol, game.GetCellType(selectedRow, selectedCol));
+        }
+
+        //---------------------------------------------------------------------------
+        /// <summary>
+        /// Shows all of the mines
+        /// </summary>
+        private void RevealMines()
+        {
+            //Loads in the mine's image
+            BitmapImage bmp = new BitmapImage(new Uri("mine.png", UriKind.Relative));
+
+            //Iterate through the entire board
+            for (byte i = 0; i < rowCount; i++)
+            {
+                for (byte j = 0; j < colCount; j++)
+                {
+                    if (game.GetCellType(i, j) == CellType.Mine && buttonArray[i, j].Content == null)
+                    {
+                        Image mineImg = new Image();
+                        mineImg.Source = bmp;
+                        buttonArray[i, j].Content = mineImg;
+                    }
+                }
+            }
         }
 
         //-----------------------------------------------------------------------

@@ -16,7 +16,7 @@ namespace Minesweaper
         private byte rowCount = 20; //The row count on the board
         private Button[,] buttonArray; //A 2d array of buttons
         private aknakereso game; //The game's class (This has most of the logic)
-        private byte mineCount = 140; //The number of mines the game will have
+        private byte mineCount = 40; //The number of mines the game will have
 
         /// <summary>
         /// Default constructor
@@ -153,9 +153,37 @@ namespace Minesweaper
                 selected.IsEnabled = false;
         }
 
-        //**************************************************************************
-        //Handlers
+        //-----------------------------------------------------------------------
+        private bool Flip(byte row, byte col)
+        {
+            FlipButton(row, col, game.GetCellType(row, col));
+            if (game.GetCellType(row, col) == CellType.None)
+            {
+                for (short i = (short)(row - 1); i <= row + 1; i++)
+                {
+                    if (i < 0 || i >= rowCount)
+                    {
+                        continue;
+                    }
 
+                    for (short j = (short)(col - 1); j <= col + 1; j++)
+                    {
+                        if (j < 0 || j >= colCount)
+                            continue;
+
+                        if (!game.WasItVisited((byte)i, (byte)j))
+                        {
+                            game.Visit((byte)i, (byte)j);
+                            Flip((byte)i, (byte)j);
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        //---------------------------------------------------------------
         /// <summary>
         /// Called when the user wants a new game
         /// </summary>
@@ -173,7 +201,8 @@ namespace Minesweaper
             string[] splittedName = (sender as Button).Name.Split('b');
             byte selectedRow = Convert.ToByte(splittedName[1]);
             byte selectedCol = Convert.ToByte(splittedName[2]);
-            FlipButton(selectedRow, selectedCol, game.GetCellType(selectedRow, selectedCol));
+
+            Flip(selectedRow, selectedCol);
         }
 
         //---------------------------------------------------------------------------

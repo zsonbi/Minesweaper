@@ -73,5 +73,15 @@ namespace Minesweaper
         {
             return board[row, col].Type;
         }
+
+        public bool WasItVisited(byte row, byte col)
+        {
+            return board[row, col].Visited;
+        }
+
+        public void Visit(byte row, byte col)
+        {
+            board[row, col].Visited = true;
+        }
     }
 }

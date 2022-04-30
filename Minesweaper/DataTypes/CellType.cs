@@ -1,5 +1,8 @@
 ﻿namespace Minesweaper
 {
+    /// <summary>
+    /// The type of the cell goes from 0 - 9
+    /// </summary>
     internal enum CellType : byte
     {
         None = 0,

@@ -9,13 +9,21 @@
     <Grid Margin="10">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50px"></RowDefinition>
+            <RowDefinition Height="55px"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Name="Controls" Orientation="Horizontal" Margin="10">
-            <Button Width="100" Content="New Game"  Click="New_Game_Button_Click" FontSize="20">
-            </Button>
+            <Button Width="100" Content="New Game" VerticalContentAlignment="Center"  Click="New_Game_Button_Click" FontSize="20" />
+
+            <Label Content="Row count:" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Margin="40,0,0,0" />
+            <TextBox Width="60" Name="RowCountTBox" PreviewTextInput="AllowOnlyNumbers" VerticalContentAlignment="Center" FontSize="18" />
+
+            <Label Content="Column count:" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Margin="40,0,0,0" />
+            <TextBox Width="60" Name="ColCountTBox" PreviewTextInput="AllowOnlyNumbers" VerticalContentAlignment="Center" FontSize="18" />
+
+            <Label Content="Mine count:" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Margin="40,0,0,0" />
+            <TextBox Width="60" Name="MineCountTbox" PreviewTextInput="AllowOnlyNumbers" VerticalContentAlignment="Center" FontSize="18" />
         </StackPanel>
 
         <Grid x:Name="GameBoard" Grid.Row="1" Margin="10">

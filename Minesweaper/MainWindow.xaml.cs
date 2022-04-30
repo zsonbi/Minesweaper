@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Text.RegularExpressions;
 
 namespace Minesweaper
 {
@@ -15,8 +16,8 @@ namespace Minesweaper
         private byte colCount = 20; //The column count on the board
         private byte rowCount = 20; //The row count on the board
         private Button[,] buttonArray; //A 2d array of buttons
-        private aknakereso game; //The game's class (This has most of the logic)
-        private byte mineCount = 40; //The number of mines the game will have
+        private MinesweaperGame game; //The game's class (This has most of the logic)
+        private short mineCount = 40; //The number of mines the game will have
 
         /// <summary>
         /// Default constructor
@@ -77,7 +78,7 @@ namespace Minesweaper
         {
             GameOverLabel.Visibility = Visibility.Hidden;
             GameBoard.IsHitTestVisible = true;
-            game = new aknakereso(rowCount, colCount, mineCount);
+            game = new MinesweaperGame(rowCount, colCount, mineCount);
             GenerateButtons();
         }
 
@@ -154,6 +155,7 @@ namespace Minesweaper
         }
 
         //-----------------------------------------------------------------------
+        //Show the cells value
         private bool Flip(byte row, byte col)
         {
             FlipButton(row, col, game.GetCellType(row, col));
@@ -189,6 +191,13 @@ namespace Minesweaper
         /// </summary>
         private void New_Game_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (RowCountTBox.Text != "")
+                this.rowCount = (byte)(Convert.ToInt32(RowCountTBox.Text) > 255 ? 255 : Convert.ToInt32(RowCountTBox.Text));
+            if (ColCountTBox.Text != "")
+                this.colCount = (byte)(Convert.ToInt32(ColCountTBox.Text) > 255 ? 255 : Convert.ToInt32(ColCountTBox.Text));
+            if (MineCountTbox.Text != "")
+                this.mineCount = (byte)(Convert.ToInt32(MineCountTbox.Text) > 255 ? 255 : Convert.ToInt32(MineCountTbox.Text));
+
             NewGame();
         }
 
@@ -249,6 +258,14 @@ namespace Minesweaper
             {
                 buttonArray[selectedRow, selectedCol].Content = null;
             }
+        }
+
+        //------------------------------------------------------------------
+        //Allows only number input
+        private void AllowOnlyNumbers(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }
